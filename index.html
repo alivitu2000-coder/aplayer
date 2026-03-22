@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A-Player Checklist</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f3ef;
+    --gold: #c9a84c;
+    --red: #c0392b;
+    --green: #27ae60;
+    --gray: #888;
+    --light: #e8e5df;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .card {
+    background: var(--white);
+    width: 100%;
+    max-width: 600px;
+    padding: 48px 48px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--black);
+  }
+
+  .top-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 6px;
+  }
+
+  .name-field {
+    border: none;
+    border-bottom: 2px solid var(--black);
+    background: transparent;
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--black);
+    width: 100%;
+    padding: 4px 0 8px;
+    outline: none;
+    margin-bottom: 36px;
+  }
+
+  .name-field::placeholder {
+    color: #ccc;
+  }
+
+  .section-title {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--light);
+  }
+
+  .questions {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 32px;
+  }
+
+  .question-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--light);
+    gap: 16px;
+  }
+
+  .question-text {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--black);
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  .toggle {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .toggle-btn {
+    width: 36px;
+    height: 28px;
+    border: 1.5px solid var(--black);
+    background: transparent;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.5px;
+  }
+
+  .toggle-btn.yes:hover, .toggle-btn.yes.active {
+    background: var(--black);
+    color: var(--white);
+  }
+
+  .toggle-btn.no:hover, .toggle-btn.no.active {
+    background: var(--black);
+    color: var(--white);
+  }
+
+  .score-section {
+    background: var(--black);
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .score-left .score-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .score-left .score-max {
+    font-size: 11px;
+    color: var(--gray);
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  .score-right {
+    text-align: right;
+  }
+
+  .verdict {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .verdict-sub {
+    font-size: 11px;
+    color: var(--gray);
+    max-width: 180px;
+    line-height: 1.4;
+  }
+
+  .score-bar {
+    height: 3px;
+    background: #222;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .score-bar-fill {
+    height: 100%;
+    background: var(--gold);
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  .disclaimer {
+    font-size: 11px;
+    color: var(--gray);
+    line-height: 1.6;
+    border-left: 2px solid var(--light);
+    padding-left: 14px;
+  }
+
+  .footer {
+    margin-top: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .author {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+
+  .author span {
+    color: var(--black);
+    font-weight: 500;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .card { max-width: 100%; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <div class="top-label">Hodnotíš osobu</div>
+  <input class="name-field" type="text" placeholder="Jméno a příjmení..." id="personName">
+
+  <div class="section-title">Klíčové otázky</div>
+
+  <div class="questions" id="questions">
+
+    <div class="question-row" data-weight="2">
+      <span class="question-text">Dělá svou práci i beze mě — bez připomínání?</span>
+      <div class="toggle">
+        <button class="toggle-btn yes" onclick="answer(this, 'yes')">ANO</button>
+        <button class="toggle-btn no" onclick="answer(this, 'no')">NE</button>
+      </div>
+    </div>
+
+    <div class="question-row" data-weight="2">
+      <span class="question-text">Nepotřebuji ho/ji kontrolovat?</span>
+      <div class="toggle">
+        <button class="toggle-btn yes" onclick="answer(this, 'yes')">ANO</button>
+        <button class="toggle-btn no" onclick="answer(this, 'no')">NE</button>
+      </div>
+    </div>
+
+    <div class="question-row" data-weight="1">
+      <span class="question-text">Chápe směr — neptá se na každý krok?</span>
+      <div class="toggle">
+        <button class="toggle-btn yes" onclick="answer(this, 'yes')">ANO</button>
+        <button class="toggle-btn no" onclick="answer(this, 'no')">NE</button>
+      </div>
+    </div>
+
+    <div class="question-row" data-weight="2">
+      <span class="question-text">Pushuje mě dopředu — a nechá se pushovat zpátky?</span>
+      <div class="toggle">
+        <button class="toggle-btn yes" onclick="answer(this, 'yes')">ANO</button>
+        <button class="toggle-btn no" onclick="answer(this, 'no')">NE</button>
+      </div>
+    </div>
+
+    <div class="question-row" data-weight="2">
+      <span class="question-text">Po každém setkání mám víc energie, ne míň?</span>
+      <div class="toggle">
+        <button class="toggle-btn yes" onclick="answer(this, 'yes')">ANO</button>
+        <button class="toggle-btn no" onclick="answer(this, 'no')">NE</button>
+      </div>
+    </div>
+
+    <div class="question-row" data-weight="1">
+      <span class="question-text">Hledá řešení — nehledá výmluvy?</span>
+      <div class="toggle">
+        <button class="toggle-btn yes" onclick="answer(this, 'yes')">ANO</button>
+        <button class="toggle-btn no" onclick="answer(this, 'no')">NE</button>
+      </div>
+    </div>
+
+    <div class="question-row" data-weight="2">
+      <span class="question-text">Kdybych ho/ji ztratil/a, bylo by mi to líto?</span>
+      <div class="toggle">
+        <button class="toggle-btn yes" onclick="answer(this, 'yes')">ANO</button>
+        <button class="toggle-btn no" onclick="answer(this, 'no')">NE</button>
+      </div>
+    </div>
+
+    <div class="question-row" data-weight="1">
+      <span class="question-text">Sedíme si lidsky — sdílíme hodnoty a směr?</span>
+      <div class="toggle">
+        <button class="toggle-btn yes" onclick="answer(this, 'yes')">ANO</button>
+        <button class="toggle-btn no" onclick="answer(this, 'no')">NE</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="score-section">
+    <div class="score-left">
+      <div class="score-number" id="scoreNum">0</div>
+      <div class="score-max">z <span id="scoreMax">13</span> bodů</div>
+    </div>
+    <div class="score-right">
+      <div class="verdict" id="verdict">—</div>
+      <div class="verdict-sub" id="verdictSub">Odpověz na otázky výše</div>
+    </div>
+  </div>
+
+  <div class="score-bar">
+    <div class="score-bar-fill" id="scoreBar"></div>
+  </div>
+
+  <div class="disclaimer">
+    Toto je pouze první filtr — ne finální verdikt. Každého člověka musíš poznat osobně. Tento checklist ti pomůže zjistit, zda vůbec dává smysl jít dál.
+  </div>
+
+  <div class="footer">
+    <div class="author">by <span>Alexander Vítů</span></div>
+  </div>
+
+</div>
+
+<script>
+  const maxScore = 13;
+
+  function answer(btn, type) {
+    const toggle = btn.parentElement;
+    toggle.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    updateScore();
+  }
+
+  function updateScore() {
+    const rows = document.querySelectorAll('.question-row');
+    let score = 0;
+    let answered = 0;
+
+    rows.forEach(row => {
+      const weight = parseInt(row.dataset.weight);
+      const yes = row.querySelector('.yes.active');
+      const no = row.querySelector('.no.active');
+      if (yes) { score += weight; answered++; }
+      else if (no) { answered++; }
+    });
+
+    document.getElementById('scoreNum').textContent = score;
+    const pct = (score / maxScore) * 100;
+    document.getElementById('scoreBar').style.width = pct + '%';
+
+    if (answered === 0) {
+      document.getElementById('verdict').textContent = '—';
+      document.getElementById('verdictSub').textContent = 'Odpověz na otázky výše';
+      return;
+    }
+
+    if (pct >= 85) {
+      document.getElementById('verdict').textContent = 'A-Player';
+      document.getElementById('verdictSub').textContent = 'Jdi do toho. Tento člověk má potenciál být klíčový.';
+    } else if (pct >= 60) {
+      document.getElementById('verdict').textContent = 'Potenciál';
+      document.getElementById('verdictSub').textContent = 'Dej mu/jí šanci — ale sleduj klíčové body.';
+    } else {
+      document.getElementById('verdict').textContent = 'Pozor';
+      document.getElementById('verdictSub').textContent = 'Přemysli to. Tato spolupráce může stát energii.';
+    }
+  }
+</script>
+
+</body>
+</html>
